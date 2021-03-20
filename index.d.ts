@@ -2233,3 +2233,5 @@ declare namespace daum.maps.services {
     PM9 = 'PM9',
   }
 }
+
+export = daum;
