@@ -1369,6 +1369,11 @@ declare namespace daum.maps {
      * 현재 페이지 번호
      */
     current: number;
+
+    /**
+     * 마지막 페이지 번호
+     */
+    last: number;
   }
 
   /**
@@ -1857,12 +1862,94 @@ declare namespace daum.maps.services {
     TM = 'TM',
   }
 
+  export enum ANALYZE_TYPE {
+    SIMILAR = 'similar', 
+    EXACT = 'exact',
+  }
+
+  export enum Is {
+    Y = "Y",
+    N = "N"
+  }
+
+  export enum AdressType {
+    "REGION", "ROAD", "REGION_ADDR", "ROAD_ADDR"
+  }
+
+  export interface AddressSearchItem {
+      address_name: string,
+      y: string,
+      x: string,
+      address_type: AdressType,
+      address: {
+        address_name: string,
+        region_1depth_name: string,
+        region_2depth_name: string,
+        region_3depth_name: string,
+        region_3depth_h_name: string,
+        h_code: string,
+        b_code: string,
+        mountain_yn: Is,
+        main_address_no: string,
+        sub_address_no: string,
+        x: string,
+        y: string
+      },
+      road_address: {
+        address_name: string,
+        region_1depth_name: string,
+        region_2depth_name: string,
+        region_3depth_name: string,
+        road_name: string,
+        underground_yn: Is,
+        main_building_no: string,
+        sub_building_no: string,
+        building_name: string,
+        zone_no: string,
+        y: string,
+        x: string
+      }
+  }
+
   /**
    * 주소-좌표간 변환 서비스 객체를 생성한다.
    *
    * @see [Geocorder](http://apis.map.kakao.com/web/documentation/#services_Geocoder)
    */
   export class Geocoder {
+    /**
+     * 입력한 좌표를 다른 좌표계의 좌표로 변환한다.
+     *
+     * @param addr 변환할 주소
+     * @param callback 변환 결과를 받을 콜백함수
+     * @param options
+     */
+
+    public addressSearch(
+      addr: string,
+      callback: (
+        result: Array<AddressSearchItem>,
+        status: Status,
+        pagination: Pagination,
+      ) => void,
+      options?: {
+        /**
+         * 검색할 페이지. 기본값은 1
+         */
+        page?: number
+
+        /**
+         * 검색할 페이지. 기본값은 10, 1~30 까지 가능
+         */
+        size?: number
+
+        /**
+         * 검색할 페이지. 기본값은 10, 1~30 까지 가능
+         */
+        analyze_type?: ANALYZE_TYPE        
+      }
+    ): void
+
     /**
      * 입력한 좌표를 다른 좌표계의 좌표로 변환한다.
      *
